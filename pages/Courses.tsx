@@ -10,7 +10,9 @@ const Courses: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-32">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-[10px] uppercase tracking-[0.2em] font-black mb-8">
-            <GraduationCap size={12} />
+            <div className="animate-pulse">
+              <GraduationCap size={12} />
+            </div>
             <span>Graph-ink Academy</span>
           </div>
           <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8">Learn 3D<br />From Masters</h1>
@@ -22,10 +24,10 @@ const Courses: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {COURSES.map((course) => (
             <div key={course.id} className="group bg-neutral-900 border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-amber-500/20 transition-all flex flex-col md:flex-row h-full">
-              <div className="w-full md:w-2/5 relative">
+              <div className="w-full md:w-2/5 relative overflow-hidden">
                 <img 
                   src={course.imageUrl} 
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
                   alt={course.title} 
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/50 to-transparent md:hidden"></div>
@@ -42,7 +44,7 @@ const Courses: React.FC = () => {
                       <span className="text-[10px] font-black uppercase text-gray-400 tracking-wider">{course.duration}</span>
                     </div>
                   </div>
-                  <h3 className="text-3xl font-black uppercase tracking-tight mb-4">{course.title}</h3>
+                  <h3 className="text-3xl font-black uppercase tracking-tight mb-4 group-hover:text-amber-500 transition-colors">{course.title}</h3>
                   <p className="text-gray-500 text-sm mb-8 leading-relaxed line-clamp-2">
                     {course.description}
                   </p>
@@ -60,9 +62,9 @@ const Courses: React.FC = () => {
                 </div>
                 <Link 
                   to={`/courses/${course.id}`}
-                  className="w-full bg-amber-500 text-black py-4 rounded-xl font-black uppercase text-xs tracking-widest flex items-center justify-center space-x-2 hover:bg-white transition-all transform active:scale-95"
+                  className="w-full bg-amber-500 text-black py-4 rounded-xl font-black uppercase text-xs tracking-widest flex items-center justify-center space-x-2 hover:bg-white transition-all transform active:scale-95 shadow-lg hover:shadow-amber-500/20"
                 >
-                  <span>Explore Details</span>
+                  <span>Enroll Now</span>
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -71,23 +73,24 @@ const Courses: React.FC = () => {
         </div>
 
         {/* Benefits Section */}
-        <div className="mt-40 grid grid-cols-1 md:grid-cols-3 gap-12 bg-white/[0.02] p-16 rounded-[3rem] border border-white/5">
-           <div className="text-center">
-              <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mx-auto mb-8">
+        <div className="mt-40 grid grid-cols-1 md:grid-cols-3 gap-12 bg-white/[0.02] p-16 rounded-[3rem] border border-white/5 relative overflow-hidden">
+           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 blur-3xl rounded-full -mr-32 -mt-32"></div>
+           <div className="text-center relative z-10">
+              <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mx-auto mb-8 transform hover:rotate-12 transition-transform">
                  <CheckCircle size={32} />
               </div>
               <h4 className="text-xl font-black uppercase mb-4 tracking-tight">Lifetime Access</h4>
               <p className="text-sm text-gray-500">Buy once, learn forever. Get all future updates to course material at no extra cost.</p>
            </div>
-           <div className="text-center">
-              <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mx-auto mb-8">
+           <div className="text-center relative z-10">
+              <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mx-auto mb-8 transform hover:-rotate-12 transition-transform">
                  <Users size={32} />
               </div>
               <h4 className="text-xl font-black uppercase mb-4 tracking-tight">Direct Mentorship</h4>
               <p className="text-sm text-gray-500">Join weekly live Q&A sessions and get personalized feedback on your portfolio.</p>
            </div>
-           <div className="text-center">
-              <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mx-auto mb-8">
+           <div className="text-center relative z-10">
+              <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mx-auto mb-8 transform hover:scale-110 transition-transform">
                  <GraduationCap size={32} />
               </div>
               <h4 className="text-xl font-black uppercase mb-4 tracking-tight">Certification</h4>

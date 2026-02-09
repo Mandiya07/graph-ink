@@ -9,13 +9,25 @@ const Home: React.FC = () => {
     <div className="pt-0">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Placeholder for Video/Cinematic BG */}
+        {/* Cinematic Background with Zoom Effect */}
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-black/50 to-black">
           <img 
             src="https://images.unsplash.com/photo-1614853316476-de00d14cb1fc?q=80&w=2070&auto=format&fit=crop" 
-            className="w-full h-full object-cover opacity-30 grayscale hover:grayscale-0 transition-all duration-1000"
+            className="w-full h-full object-cover opacity-30 grayscale hover:grayscale-0 transition-all duration-[20s] ease-linear scale-110 animate-[zoom_20s_infinite_alternate]"
             alt="Cinematic Background"
           />
+          <style>
+            {`
+              @keyframes zoom {
+                from { transform: scale(1); }
+                to { transform: scale(1.15); }
+              }
+              .text-stroke {
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+                color: transparent;
+              }
+            `}
+          </style>
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
@@ -24,10 +36,13 @@ const Home: React.FC = () => {
             <span>Award Winning Studio</span>
           </div>
           <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-6 leading-[0.9]">
-            Visualizing the <br /> <span className="text-transparent border-t border-b py-2 block md:inline border-white/20 px-2 mt-4 md:mt-0">Impossible</span>
+            Visualizing the <br /> 
+            <span className="text-amber-500 border-t border-b py-2 block md:inline border-white/20 px-4 mt-4 md:mt-0 italic">
+              Impossible
+            </span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 font-medium mb-12">
-            Graph-ink is a creative force in 3D animation, VFX, and motion storytelling. We transform abstract concepts into cinematic reality.
+            Graph-ink is a creative force in 3D animation, VFX, and motion storytelling. We transform abstract concepts into cinematic reality for global brands.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
             <Link 

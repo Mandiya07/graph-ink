@@ -17,9 +17,18 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isOpen]);
+
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ${
         scrolled ? 'bg-black/90 backdrop-blur-md py-3 shadow-2xl border-b border-white/10' : 'bg-transparent py-5'
       }`}
     >
@@ -38,16 +47,19 @@ const Navbar: React.FC = () => {
             <Link
               key={link.path}
               to={link.path}
-              className={`text-sm font-medium transition-colors hover:text-amber-500 ${
-                location.pathname === link.path ? 'text-amber-500 underline underline-offset-8' : 'text-gray-400'
+              className={`text-sm font-medium transition-all hover:text-amber-500 relative py-1 ${
+                location.pathname === link.path ? 'text-amber-500' : 'text-gray-400'
               }`}
             >
               {link.name}
+              {location.pathname === link.path && (
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-amber-500 rounded-full animate-in slide-in-from-left duration-300"></span>
+              )}
             </Link>
           ))}
           <Link 
             to="/about#contact" 
-            className="bg-amber-500 hover:bg-amber-600 text-black px-6 py-2.5 rounded-full text-sm font-bold transition-all transform hover:scale-105"
+            className="bg-amber-500 hover:bg-white text-black px-6 py-2.5 rounded-full text-sm font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-amber-500/10"
           >
             Hire Me
           </Link>
@@ -55,7 +67,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden text-white" 
+          className="md:hidden text-white p-2 hover:bg-white/5 rounded-xl transition-colors" 
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
@@ -64,30 +76,44 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Nav Overlay */}
-      {isOpen && (
-        <div className="md:hidden absolute top-0 left-0 w-full h-screen bg-black z-40 flex flex-col items-center justify-center space-y-8 animate-in fade-in zoom-in duration-300">
-          <button className="absolute top-6 right-6" onClick={() => setIsOpen(false)}>
-            <X size={32} />
-          </button>
-          {NAV_LINKS.map((link) => (
+      <div 
+        className={`md:hidden fixed inset-0 w-full h-screen bg-black/95 backdrop-blur-2xl z-50 flex flex-col items-center justify-center space-y-8 transition-all duration-500 ${
+          isOpen ? 'opacity-100 pointer-events-auto scale-100' : 'opacity-0 pointer-events-none scale-110'
+        }`}
+      >
+        <button 
+          className="absolute top-6 right-6 p-4 text-white hover:text-amber-500 transition-colors" 
+          onClick={() => setIsOpen(false)}
+        >
+          <X size={40} />
+        </button>
+        
+        <div className="flex flex-col items-center space-y-6">
+          {NAV_LINKS.map((link, idx) => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="text-2xl font-bold hover:text-amber-500"
+              style={{ transitionDelay: `${idx * 50}ms` }}
+              className={`text-4xl font-black uppercase tracking-tighter transition-all hover:text-amber-500 transform ${
+                isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+              } ${location.pathname === link.path ? 'text-amber-500' : 'text-white'}`}
             >
               {link.name}
             </Link>
           ))}
-          <Link 
-            to="/about#contact" 
-            onClick={() => setIsOpen(false)}
-            className="bg-amber-500 text-black px-10 py-4 rounded-full text-xl font-bold"
-          >
-            Hire Me
-          </Link>
         </div>
-      )}
+
+        <Link 
+          to="/about#contact" 
+          onClick={() => setIsOpen(false)}
+          className={`bg-amber-500 text-black px-12 py-5 rounded-full text-xl font-black uppercase tracking-widest transform transition-all delay-300 ${
+            isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+          }`}
+        >
+          Hire Me
+        </Link>
+      </div>
     </nav>
   );
 };

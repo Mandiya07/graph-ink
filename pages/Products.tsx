@@ -1,9 +1,18 @@
 
-import React from 'react';
-import { ShoppingBag, ArrowUpRight, Download } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShoppingBag, ArrowUpRight, Download, CheckCircle } from 'lucide-react';
 import { PRODUCTS } from '../constants';
 
 const Products: React.FC = () => {
+  const [cartFeedback, setCartFeedback] = useState<Record<string, boolean>>({});
+
+  const handleAddToCart = (id: string) => {
+    setCartFeedback(prev => ({ ...prev, [id]: true }));
+    setTimeout(() => {
+      setCartFeedback(prev => ({ ...prev, [id]: false }));
+    }, 2000);
+  };
+
   return (
     <div className="pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-6">
@@ -14,7 +23,7 @@ const Products: React.FC = () => {
               Elevate your own 3D projects with our curated collection of professional assets, shader packs, and in-depth tutorials.
             </p>
           </div>
-          <div className="bg-amber-500 p-6 rounded-2xl flex items-center space-x-6">
+          <div className="bg-amber-500 p-6 rounded-2xl flex items-center space-x-6 shadow-2xl shadow-amber-500/20">
              <ShoppingBag size={40} className="text-black" />
              <div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Store Status</p>
@@ -25,10 +34,11 @@ const Products: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {PRODUCTS.map((product) => (
-            <div key={product.id} className="group bg-neutral-900/50 border border-white/5 rounded-3xl overflow-hidden hover:border-amber-500/30 transition-all flex flex-col">
+            <div key={product.id} className="group bg-neutral-900/50 border border-white/5 rounded-3xl overflow-hidden hover:border-amber-500/30 transition-all flex flex-col hover:shadow-2xl hover:shadow-amber-500/5">
                <div className="aspect-[4/3] overflow-hidden relative">
                   <img 
                     src={product.imageUrl} 
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                     alt={product.title} 
                   />
@@ -36,7 +46,7 @@ const Products: React.FC = () => {
                     <span className="text-amber-500 font-black tracking-tight">{product.price}</span>
                   </div>
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-                     <button className="bg-white text-black px-6 py-3 rounded-full font-black uppercase text-[10px] tracking-widest flex items-center space-x-2">
+                     <button className="bg-white text-black px-6 py-3 rounded-full font-black uppercase text-[10px] tracking-widest flex items-center space-x-2 transform active:scale-95 transition-transform">
                         <Download size={14} />
                         <span>Instant Access</span>
                      </button>
@@ -49,9 +59,23 @@ const Products: React.FC = () => {
                     {product.description}
                   </p>
                   <div className="mt-auto">
-                    <button className="w-full flex items-center justify-between group/btn text-sm font-black uppercase tracking-widest border-t border-white/5 pt-6 hover:text-amber-500 transition-colors">
-                      <span>Add to Cart</span>
-                      <ArrowUpRight size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                    <button 
+                      onClick={() => handleAddToCart(product.id)}
+                      className="w-full flex items-center justify-between group/btn text-sm font-black uppercase tracking-widest border-t border-white/5 pt-6 hover:text-amber-500 transition-colors"
+                    >
+                      <span className="flex items-center space-x-2">
+                        {cartFeedback[product.id] ? (
+                          <span className="text-amber-500 flex items-center space-x-2 fade-in">
+                            <CheckCircle size={16} />
+                            <span>Added to Cart</span>
+                          </span>
+                        ) : (
+                          <span>Add to Cart</span>
+                        )}
+                      </span>
+                      {!cartFeedback[product.id] && (
+                        <ArrowUpRight size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                      )}
                     </button>
                   </div>
                </div>
